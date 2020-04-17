@@ -63,10 +63,9 @@ def removeBackground(img):
 rval, frame = cap.read()
 image = cv2.imread('background.jpg');
 background = cv2.resize(image, (640, 480))
-#background = cv2.cvtColor(background, cv2.COLOR_BGR2RGB)
 
-lower_blue = np.array([0, 150, 0])     ##[R value, G value, B value]
-upper_blue = np.array([50, 255, 60]) 
+lower_green = np.array([0, 150, 0])     ##[R value, G value, B value]
+upper_green = np.array([50, 255, 60]) 
 
 process = (
     ffmpeg
@@ -81,19 +80,17 @@ while rval:
         key = cv2.waitKey(20)
         if frame is not None:  
             output = removeBackground(frame)
-            #img_copy = output.copy()
-            #mask = cv2.inRange(img_copy, lower_blue, upper_blue)
-            #masked_image = np.copy(output)
-            #img_copy[mask != 0] = [0, 0, 0]
-            #crop_background = background[0:720, 0:1280]
-            #crop_background[mask == 0] = [0, 0, 0]
-            #final_image = crop_background + img_copy
-            outputImage = np.where(output == (0, 255, 0), background, output)
-            process.stdin.write(outputImage) #expects a bytes type object
+            img_copy = output.copy()
+            mask = cv2.inRange(img_copy, lower_green, upper_green)
+            masked_image = np.copy(img_copy)
+            masked_image[mask != 0] = [0, 0, 0]
+            crop_background = background.copy() #[0:720, 0:1280]
+            crop_background[mask == 0] = [0, 0, 0]
+            final_image = crop_background + masked_image 
+            process.stdin.write(final_image) #expects a bytes type object
 
     except KeyboardInterrupt:
         cap.release()
         process.stdin.close()
         process.wait()
-        sys.exit()
         sys.exit(0)
