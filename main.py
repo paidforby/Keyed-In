@@ -20,6 +20,7 @@ if not cap:
 
 def removeBackground(img):
 
+    # Derived from https://stackoverflow.com/questions/49093729/remove-background-of-any-image-using-opencv
     #-- Read image to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
