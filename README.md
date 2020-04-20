@@ -14,3 +14,6 @@ pip install opencv-python ffmpeg-python
 sudo modprobe v4l2loopback
 ```
 4. Run `python main.py`
+
+After running `main.py`, you should have another webcam device, such as `/dev/video1`, you can test this video device by running something like `ffplay /dev/video1`  
+NOTE: this code barely works. Unless you have a specific use case in mind, I highly recommend to just buy a stack of green construction paper and tape it to your wall and then use the chroma key feature in an open source software suite such as, [OBS-Studio](https://github.com/obsproject/obs-studio).
